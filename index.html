@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<title>Z D&D Battle Map</title>
+	</head>
+	<body height="4800" style="background-color : #888;">
+		<canvas id="map" width="700" height="700" onmouseover="hover = true;" onmouseleave="hover = false;" style=" float: left; top:0; left:0; margin-right: 20;"></canvas>
+		<div id="menu" style="display: block;" width="200">
+			<h2 id="mode">Mode: Move</h2>
+			<button onclick="swapMode()" id="modeButton">Paint Mode</button>
+			<div id="creatureStats" style="display: block;">
+				<h3>Name:</h3>
+				<input type="text" id="name" value="None selected" onchange="players[selected].name = document.getElementById('name').value;" style="font-size: 18px;"></input>
+				<h3>Size:</h3>
+				<select id = "size" onchange="players[selected].resize();">
+				  <option value="t">Tiny</option>
+				  <option value="s">Small</option>
+				  <option value="m">Medium</option>
+				  <option value="l">Large</option>
+				  <option value="h">Huge</option>
+				  <option value="g">Gargantuan</option>
+				</select>
+				<h3>Color:</h3>
+				<select id = "color" onchange="players[selected].recolor();"">
+				  <option value="navy">Alkas Blue™</option>
+				  <option value="#36393e">Thia Grey</option>
+				  <option value="#4b784b">Turtle Green</option>
+				  <option value="firebrick">Aatzer Red</option>
+				  <option value="steelblue">Magann Blue</option>
+				  <option value="black">Black</option>
+				  <option value="grey">Grey</option>
+				  <option value="silver">Silver</option>
+				  <option value="white">White</option>
+				  <option value="lightpink">Pink</option>
+				  <option value="red">Red</option>
+				  <option value="maroon">Maroon</option>
+				  <option value="orange">Orange</option>
+				  <option value="yellow">Yellow</option>
+				  <option value="olive">Olive</option>
+				  <option value="lime">Lime</option>
+				  <option value="green">Green</option>
+				  <option value="aqua">Aqua</option>
+				  <option value="teal">Teal</option>
+				  <option value="blue">Blue</option>
+				  <option value="fuchsia">Fuchsia</option>
+				  <option value="purple">Purple</option>
+				  <option value="saddlebrown">Brown</option>
+				</select>
+				<h3 id="altLabel">Altitude: 0</h3>
+				<input type="range" id="playerAlt" min="0" max="100" value="0" step="1"/>
+				<h3>Notes:</h3>
+				<textarea id="notes" rows="3" cols="30" onchange="players[selected].notes = document.getElementById('notes').innerHTML;"></textarea>
+				<br/><br/>
+				<button onclick="addCreature()">Add Creature</button>
+				<button onclick="deleteCreature()">Remove Selected</button>
+			</div>
+			<div id="paintControls" style="display: none;">
+				<h3>Paint Color:</h3>
+				<select id="paintColor">
+				  <option value="white">White</option>
+				  <option value="silver">Silver</option>
+				  <option value="grey">Grey</option>
+				  <option value="black">Black</option>
+				  <option value="red">Red</option>
+				  <option value="maroon">Maroon</option>
+				  <option value="orange">Orange</option>
+				  <option value="yellow">Yellow</option>
+				  <option value="olive">Olive</option>
+				  <option value="lime">Lime</option>
+				  <option value="green">Green</option>
+				  <option value="aqua">Aqua</option>
+				  <option value="teal">Teal</option>
+				  <option value="blue">Blue</option>
+				  <option value="navy">Navy</option>
+				  <option value="fuchsia">Fuchsia</option>
+				  <option value="purple">Purple</option>
+				  <option value="erase">Erase</option>
+				</select>
+				<h3>Paint Size:</h3>
+				<input type="range" id="paintSize" min="1" max="50" value="5" step="1"/>
+				<br/><br/>
+				<button onclick="paint = []">Clear Paint</button>
+				<h3>Background Color:</h3>
+				<select id="backgroundColor" onchange="background = document.getElementById('backgroundColor').value;">
+				  <option value="dimgrey">Dark Grey</option>
+				  <option value="white">White</option>
+				  <option value="silver">Silver</option>
+				  <option value="grey">Grey</option>
+				  <option value="black">Black</option>
+				  <option value="red">Red</option>
+				  <option value="maroon">Maroon</option>
+				  <option value="orange">Orange</option>
+				  <option value="yellow">Yellow</option>
+				  <option value="olive">Olive</option>
+				  <option value="lime">Lime</option>
+				  <option value="green">Green</option>
+				  <option value="aqua">Aqua</option>
+				  <option value="teal">Teal</option>
+				  <option value="blue">Blue</option>
+				  <option value="navy">Navy</option>
+				  <option value="fuchsia">Fuchsia</option>
+				  <option value="purple">Purple</option>
+				</select>
+				<h3>Background Image:</h3>
+				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);" />
+			</div>
+		<script src="js/map.js"></script>
+	</body>
+</html>
