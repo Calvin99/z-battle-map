@@ -3,6 +3,8 @@ var ctx = canvas.getContext("2d");
 
 console.clear();
 
+var scale = 35;
+
 var mouseX = null,
     mouseY = null;
  
@@ -31,12 +33,12 @@ fReader.onloadend = function(event){
 }
 
 var sizeNumber = new Map();
-sizeNumber.set("t", 5);
-sizeNumber.set("s", 10);
-sizeNumber.set("m", 15);
-sizeNumber.set("l", 30);
-sizeNumber.set("h", 45);
-sizeNumber.set("g", 65);
+sizeNumber.set("t", scale/7);  //35/7
+sizeNumber.set("s", scale*2/7); //35*2/7
+sizeNumber.set("m", scale*3/7); //35*3/7
+sizeNumber.set("l", scale*6/7); //35*6/7
+sizeNumber.set("h", scale*9/7); //35*9/7
+sizeNumber.set("g", scale*13/7); //35*13/7
 
 function Creature(x, y, color, name, size) {
     this.x = x;
@@ -56,132 +58,126 @@ function Creature(x, y, color, name, size) {
 }
 
 Creature.prototype.draw = function() {
-    if (this.z > 0 || this.a > 0) {
-        ctx.fillStyle = "rgba(0,0,0,0.25)";
-        ctx.beginPath();
-        ctx.arc(this.x - this.z - this.a, this.y + this.z + this.a, this.r, Math.PI * 2, false);
-        ctx.fill();
-    }
+	ctx.fillStyle = "rgba(0,0,0,0.25)";
+	ctx.beginPath();
+	ctx.arc(this.x - this.z - this.a, this.y + this.z + this.a, this.r, Math.PI * 2, false);
+	ctx.fill();
+    
     if (this.selected) {
         ctx.strokeStyle = "white";
         ctx.lineWidth = 2;
         if (this.size == "t") {
             ctx.beginPath();
-            ctx.moveTo(this.x - 8.75, this.y - 5.75);
-            ctx.lineTo(this.x - 8.75, this.y - 8.75);
-            ctx.lineTo(this.x - 5.75, this.y - 8.75);
+            ctx.moveTo(this.x - scale/4, this.y - scale*3/24); //35/4, //35/6
+            ctx.lineTo(this.x - scale/4, this.y - scale/4);
+            ctx.lineTo(this.x - scale*3/24, this.y - scale/4);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x - 8.75, this.y + 5.75);
-            ctx.lineTo(this.x - 8.75, this.y + 8.75);
-            ctx.lineTo(this.x - 5.75, this.y + 8.75);
+            ctx.moveTo(this.x - scale/4, this.y + scale*3/24); //35/4, //35/6
+            ctx.lineTo(this.x - scale/4, this.y + scale/4);
+            ctx.lineTo(this.x - scale*3/24, this.y + scale/4);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 8.75, this.y - 5.75);
-            ctx.lineTo(this.x + 8.75, this.y - 8.75);
-            ctx.lineTo(this.x + 5.75, this.y - 8.75);
+            ctx.moveTo(this.x + scale/4, this.y - scale*3/24); //35/4, //35/6
+            ctx.lineTo(this.x + scale/4, this.y - scale/4);
+            ctx.lineTo(this.x + scale*3/24, this.y - scale/4);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 8.75, this.y + 5.75);
-            ctx.lineTo(this.x + 8.75, this.y + 8.75);
-            ctx.lineTo(this.x + 5.75, this.y + 8.75);
+            ctx.moveTo(this.x + scale/4, this.y + scale*3/24); //35/4, //35/6
+            ctx.lineTo(this.x + scale/4, this.y + scale/4);
+            ctx.lineTo(this.x + scale*3/24, this.y + scale/4);
             ctx.stroke();
         }
         else if (this.size == "m" || this.size == "s") {
             ctx.beginPath();
-            ctx.moveTo(this.x - 17.5, this.y - 10.5);
-            ctx.lineTo(this.x - 17.5, this.y - 17.5);
-            ctx.lineTo(this.x - 10.5, this.y - 17.5);
+            ctx.moveTo(this.x - scale/2, this.y - scale/3);
+            ctx.lineTo(this.x - scale/2, this.y - scale/2);
+            ctx.lineTo(this.x - scale/3, this.y - scale/2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x - 17.5, this.y + 10.5);
-            ctx.lineTo(this.x - 17.5, this.y + 17.5);
-            ctx.lineTo(this.x - 10.5, this.y + 17.5);
+            ctx.moveTo(this.x - scale/2, this.y + scale/3);
+            ctx.lineTo(this.x - scale/2, this.y + scale/2);
+            ctx.lineTo(this.x - scale/3, this.y + scale/2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 17.5, this.y - 10.5);
-            ctx.lineTo(this.x + 17.5, this.y - 17.5);
-            ctx.lineTo(this.x + 10.5, this.y - 17.5);
+            ctx.moveTo(this.x + scale/2, this.y - scale/3);
+            ctx.lineTo(this.x + scale/2, this.y - scale/2);
+            ctx.lineTo(this.x + scale/3, this.y - scale/2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 17.5, this.y + 10.5);
-            ctx.lineTo(this.x + 17.5, this.y + 17.5);
-            ctx.lineTo(this.x + 10.5, this.y + 17.5);
+            ctx.moveTo(this.x + scale/2, this.y + scale/3);
+            ctx.lineTo(this.x + scale/2, this.y + scale/2);
+            ctx.lineTo(this.x + scale/3, this.y + scale/2);
             ctx.stroke();
         }
         else if (this.size == "l") {
             ctx.beginPath();
-            ctx.moveTo(this.x - 35, this.y - 25);
-            ctx.lineTo(this.x - 35, this.y - 35);
-            ctx.lineTo(this.x - 25, this.y - 35);
+            ctx.moveTo(this.x - scale, this.y - scale/7*5);
+            ctx.lineTo(this.x - scale, this.y - scale);
+            ctx.lineTo(this.x - scale/7*5, this.y - scale);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x - 35, this.y + 25);
-            ctx.lineTo(this.x - 35, this.y + 35);
-            ctx.lineTo(this.x - 25, this.y + 35);
+            ctx.moveTo(this.x - scale, this.y + scale/7*5);
+            ctx.lineTo(this.x - scale, this.y + scale);
+            ctx.lineTo(this.x - scale/7*5, this.y + scale);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 35, this.y - 25);
-            ctx.lineTo(this.x + 35, this.y - 35);
-            ctx.lineTo(this.x + 25, this.y - 35);
+            ctx.moveTo(this.x + scale, this.y - scale/7*5);
+            ctx.lineTo(this.x + scale, this.y - scale);
+            ctx.lineTo(this.x + scale/7*5, this.y - scale);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 35, this.y + 25);
-            ctx.lineTo(this.x + 35, this.y + 35);
-            ctx.lineTo(this.x + 25, this.y + 35);
+            ctx.moveTo(this.x + scale, this.y + scale/7*5);
+            ctx.lineTo(this.x + scale, this.y + scale);
+            ctx.lineTo(this.x + scale/7*5, this.y + scale);
             ctx.stroke();
         }
-        else if (this.size == "h") {
+        else if (this.size == "h") {//52.5 = scale * 1.5, 37.5 = 
             ctx.beginPath();
-            ctx.moveTo(this.x - 52.5, this.y - 37.5);
-            ctx.lineTo(this.x - 52.5, this.y - 52.5);
-            ctx.lineTo(this.x - 37.5, this.y - 52.5);
+            ctx.moveTo(this.x - scale*1.5, this.y - scale);
+            ctx.lineTo(this.x - scale*1.5, this.y - scale*1.5);
+            ctx.lineTo(this.x - scale, this.y - scale*1.5);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x - 52.5, this.y + 37.5);
-            ctx.lineTo(this.x - 52.5, this.y + 52.5);
-            ctx.lineTo(this.x - 37.5, this.y + 52.5);
+            ctx.moveTo(this.x - scale*1.5, this.y + scale);
+            ctx.lineTo(this.x - scale*1.5, this.y + scale*1.5);
+            ctx.lineTo(this.x - scale, this.y + scale*1.5);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 52.5, this.y - 37.5);
-            ctx.lineTo(this.x + 52.5, this.y - 52.5);
-            ctx.lineTo(this.x + 37.5, this.y - 52.5);
+            ctx.moveTo(this.x + scale*1.5, this.y - scale);
+            ctx.lineTo(this.x + scale*1.5, this.y - scale*1.5);
+            ctx.lineTo(this.x + scale, this.y - scale*1.5);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 52.5, this.y + 37.5);
-            ctx.lineTo(this.x + 52.5, this.y + 52.5);
-            ctx.lineTo(this.x + 37.5, this.y + 52.5);
+            ctx.moveTo(this.x + scale*1.5, this.y + scale);
+            ctx.lineTo(this.x + scale*1.5, this.y + scale*1.5);
+            ctx.lineTo(this.x + scale, this.y + scale*1.5);
             ctx.stroke();
         }
         else if (this.size == "g") {
             ctx.beginPath();
-            ctx.moveTo(this.x - 70, this.y - 50);
-            ctx.lineTo(this.x - 70, this.y - 70);
-            ctx.lineTo(this.x - 50, this.y - 70);
+            ctx.moveTo(this.x - scale*2, this.y - scale/7*10);
+            ctx.lineTo(this.x - scale*2, this.y - scale*2);
+            ctx.lineTo(this.x - scale/7*10, this.y - scale*2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x - 70, this.y + 50);
-            ctx.lineTo(this.x - 70, this.y + 70);
-            ctx.lineTo(this.x - 50, this.y + 70);
+            ctx.moveTo(this.x - scale*2, this.y + scale/7*10);
+            ctx.lineTo(this.x - scale*2, this.y + scale*2);
+            ctx.lineTo(this.x - scale/7*10, this.y + scale*2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 70, this.y - 50);
-            ctx.lineTo(this.x + 70, this.y - 70);
-            ctx.lineTo(this.x + 50, this.y - 70);
+            ctx.moveTo(this.x + scale*2, this.y - scale/7*10);
+            ctx.lineTo(this.x + scale*2, this.y - scale*2);
+            ctx.lineTo(this.x + scale/7*10, this.y - scale*2);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(this.x + 70, this.y + 50);
-            ctx.lineTo(this.x + 70, this.y + 70);
-            ctx.lineTo(this.x + 50, this.y + 70);
+            ctx.moveTo(this.x + scale*2, this.y + scale/7*10);
+            ctx.lineTo(this.x + scale*2, this.y + scale*2);
+            ctx.lineTo(this.x + scale/7*10, this.y + scale*2);
             ctx.stroke();
         }
     }
     ctx.globalAlpha = 0.8;
-    
-    /*ctx.fillStyle = "black";
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r+2, Math.PI * 2, false);
-    ctx.fill();*/
     
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -215,14 +211,14 @@ Creature.prototype.draw = function() {
 
 Creature.prototype.align = function() {
     if (this.size == "t") {
-        this.xGoal = Math.round((this.x - 8.75) / 17.5) * 17.5 + 8.75;
-        this.yGoal = Math.round((this.y - 8.75) / 17.5) * 17.5 + 8.75;
+        this.xGoal = Math.round((this.x - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
+        this.yGoal = Math.round((this.y - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
     } else if (this.size == "l" || this.size == "g") {
-        this.xGoal = Math.round(this.x / 35) * 35;
-        this.yGoal = Math.round(this.y / 35) * 35;
+        this.xGoal = Math.round(this.x / scale) * scale;
+        this.yGoal = Math.round(this.y / scale) * scale;
     } else {
-        this.xGoal = Math.round((this.x - 17.5) / 35) * 35 + 17.5;
-        this.yGoal = Math.round((this.y - 17.5) / 35) * 35 + 17.5;
+        this.xGoal = Math.round((this.x - (scale/2)) / scale) * scale + (scale/2);
+        this.yGoal = Math.round((this.y - (scale/2)) / scale) * scale + (scale/2);
     }
 }
 
@@ -238,6 +234,7 @@ Creature.prototype.update = function() {
     if (this.z > 0) this.z--;
     if (this.r > this.rGoal) this.r--;
     else if (this.r < this.rGoal) this.r++;
+    if (Math.abs(this.r - this.rGoal) < 1) this.r = this.rGoal;
 }
 
 Creature.prototype.display = function() {
@@ -271,7 +268,7 @@ players[players.length] = new Creature(306.25, 341.25, "white", "A'chuan", "t");
 players[players.length] = new Creature(306.25, 358.75, "saddlebrown", "Basil", "t");
 
 function addCreature () {
-	players[players.length] = new Creature(17.5, 17.5, "red", "New Creature", "m");
+	players[players.length] = new Creature(scale/2, scale/2, "red", "New Creature", "m");
 }
 
 function deleteCreature () {
@@ -306,6 +303,21 @@ function swapMode() {
 	}
 }
 
+function updateScale() {
+	scale = parseInt(document.getElementById("scale").value);
+	sizeNumber.set("t", scale/7);
+	sizeNumber.set("s", scale*2/7);
+	sizeNumber.set("m", scale*3/7);
+	sizeNumber.set("l", scale*6/7);
+	sizeNumber.set("h", scale*9/7);
+	sizeNumber.set("g", scale*13/7);
+	for (i = 0; i < players.length; i++) {
+    	players[i].rGoal = sizeNumber.get(players[i].size);
+		players[i].align();
+		//players[i].update();
+	}
+}
+
 var paint = [];
 
 setInterval(draw, 20);
@@ -330,14 +342,14 @@ function draw() {
     //Draw grid
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
-    for (i = 0; i < 19; i++) {
+    for (i = 0; i < (700 / scale) - 1; i++) {
         ctx.beginPath();
-        ctx.moveTo(0, 35 + i * 35);
-        ctx.lineTo(700, 35 + i * 35);
+        ctx.moveTo(0, scale + i * scale);
+        ctx.lineTo(700, scale + i * scale);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(35 + i * 35, 0);
-        ctx.lineTo(35 + i * 35, 700);
+        ctx.moveTo(scale + i * scale, 0);
+        ctx.lineTo(scale + i * scale, 700);
         ctx.stroke();
     }
 

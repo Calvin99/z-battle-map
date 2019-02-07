@@ -101,7 +101,15 @@
 				  <option value="purple">Purple</option>
 				</select>
 				<h3>Background Image:</h3>
-				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);" />
+				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);"/>
+				<h3>Scale:</h3>
+				<select id="scale" onchange="updateScale();">
+				  <option value="35">Regular (35px)</option>
+				  <option value="14">Tiny (14px)</option>
+				  <option value="20">Small (20px)</option>
+				  <option value="50">Large (50px)</option>
+				  <option value="70">Huge (70px)</option>
+				</select>
 			</div>
 		<script src="js/map.js"></script>
 	</body>
