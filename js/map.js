@@ -421,7 +421,7 @@ document.onmousedown = function(e) {
 	if (hover) {
 		if (mode == "move") {
 			var playerClicked = false;
-			for (i = 0; i < players.length; i++) {
+			for (i = players.length - 1; i >= 0; i--) {
 				if (Math.pow(Math.pow(mouseX - players[i].x, 2) + Math.pow(mouseY - players[i].y, 2), 0.5) < players[i].r) {
 					if (selected != null) players[selected].selected = false;
 					players[i].selected = true;
