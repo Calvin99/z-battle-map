@@ -441,7 +441,7 @@ document.onmousedown = function(e) {
 				document.getElementById("name").value = "None selected";
 				document.getElementById("size").value = "t";
 				document.getElementById("color").value = "white";
-				document.getElementById("notes").innerHtml = "";
+				document.getElementById("notes").value = "";
 			}
 		} else {
 			brush = true;
@@ -468,7 +468,8 @@ document.onmouseup = function(e) {
 document.onkeydown = function(e) {
     e = window.event || e;
     var key = e.keyCode;
-    e.preventDefault();
+    if (mouseX < 700)
+		e.preventDefault();
 
     if (key === 16) { //shift
     	forceLine = true;
@@ -479,7 +480,8 @@ document.onkeydown = function(e) {
 document.onkeyup = function(e) {
     e = window.event || e;
     var key = e.keyCode;
-    e.preventDefault();
+    if (mouseX < 700)
+		e.preventDefault();
 
     if (key === 16) { //shift
     	forceLine = false;

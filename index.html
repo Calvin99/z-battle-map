@@ -9,7 +9,7 @@
 			<button onclick="swapMode()" id="modeButton">Paint Mode</button>
 			<div id="creatureStats" style="display: block;">
 				<h3>Name:</h3>
-				<input type="text" id="name" value="None selected" onchange="players[selected].name = document.getElementById('name').value;" style="font-size: 18px;"></input>
+				<input type="text" id="name" defaultValue="None selected" onchange="{players[selected].name = document.getElementById('name').value;}" style="font-size: 18px; z-index: 1;"></input>
 				<h3>Size:</h3>
 				<select id = "size" onchange="players[selected].resize();">
 				  <option value="t">Tiny</option>
@@ -48,7 +48,7 @@
 				<h3 id="altLabel">Altitude: 0</h3>
 				<input type="range" id="playerAlt" min="0" max="100" value="0" step="1"/>
 				<h3>Notes:</h3>
-				<textarea id="notes" rows="3" cols="30" onchange="players[selected].notes = document.getElementById('notes').innerHTML;"></textarea>
+				<textarea id="notes" rows="3" cols="30" onchange="players[selected].notes = document.getElementById('notes').value;" style="z-index: 1;"></textarea>
 				<br/><br/>
 				<button onclick="addCreature()">Add Creature</button>
 				<button onclick="deleteCreature()">Remove Selected</button>
@@ -102,6 +102,11 @@
 				</select>
 				<h3>Background Image:</h3>
 				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);"/>
+				<h4>Defaults:</h4>
+				<select id="mapDef" onchange="mapImg.src = document.getElementById('mapDef').value;">
+					<option value="">None</option>
+					<option value="images/Ship.png">The Madrigal</option>
+				</select>
 				<h3>Scale:</h3>
 				<select id="scale" onchange="updateScale();">
 				  <option value="35">Regular (35px)</option>
