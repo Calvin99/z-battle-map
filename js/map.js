@@ -320,6 +320,10 @@ function updateScale() {
 
 var paint = [];
 
+var label = false;
+
+var letters = ["A", "B", "C", "D", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
 setInterval(draw, 20);
 
 function draw() {
@@ -338,6 +342,13 @@ function draw() {
         ctx.arc(paint[i][0], paint[i][1], paint[i][2], Math.PI * 2, false);
         ctx.fill();
     }
+    
+    if (mode == "paint") {
+		ctx.fillStyle = "rgba(25, 25, 25, 0.25)";
+		ctx.beginPath();
+		ctx.arc(mouseX, mouseY, document.getElementById("paintSize").value, Math.PI * 2, false);
+		ctx.fill();
+	}
 
     //Draw grid
     ctx.strokeStyle = "black";
@@ -352,6 +363,20 @@ function draw() {
         ctx.lineTo(scale + i * scale, 700);
         ctx.stroke();
     }
+    
+    //Draw labels
+	ctx.font = (scale / 3) + "px Arial";
+	ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	//ctx.fillText("Hello World", canvas.width/2, canvas.height/2);
+	if (label) {
+		for (x = 0; x < 700 / scale; x++) {
+			for (y = 0; y < 700 / scale; y++) {
+				ctx.fillText(letters[x]+(y+1), x * scale + scale / 2, y * scale + scale / 2);
+			}
+		}
+	}
 
     //Draw creatures
     var flying = false;
@@ -375,13 +400,6 @@ function draw() {
 		}
     }
     if (selected != null) players[selected].draw();
-    
-    if (mode == "paint") {
-		ctx.fillStyle = "rgba(25, 25, 25, 0.25)";
-		ctx.beginPath();
-		ctx.arc(mouseX, mouseY, document.getElementById("paintSize").value, Math.PI * 2, false);
-		ctx.fill();
-	}
 }
 
 document.onmousemove = function(e) {
@@ -468,7 +486,7 @@ document.onmouseup = function(e) {
 document.onkeydown = function(e) {
     e = window.event || e;
     var key = e.keyCode;
-    if (mouseX < 700)
+    if (hover)
 		e.preventDefault();
 
     if (key === 16) { //shift
@@ -480,7 +498,7 @@ document.onkeydown = function(e) {
 document.onkeyup = function(e) {
     e = window.event || e;
     var key = e.keyCode;
-    if (mouseX < 700)
+    if (hover)
 		e.preventDefault();
 
     if (key === 16) { //shift
