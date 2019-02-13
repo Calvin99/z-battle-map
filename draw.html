@@ -26,69 +26,100 @@
 			<option value="saddlebrown">Brown</option>
 		</select>
 		<input type="checkbox" id="grid" value="grid" checked>Show Grid<br>
-		<h3>Room Color:</h3>
-		<select id="roomColor" value="saddlebrown" onchange="room = document.getElementById('roomColor').value;">
-			<option value="saddlebrown">Brown</option>
-			<option value="white">White</option>
-			<option value="silver">Silver</option>
-			<option value="grey">Grey</option>
-			<option value="black">Black</option>
-			<option value="red">Red</option>
-			<option value="maroon">Maroon</option>
-			<option value="orange">Orange</option>
-			<option value="yellow">Yellow</option>
-			<option value="olive">Olive</option>
-			<option value="lime">Lime</option>
-			<option value="green">Green</option>
-			<option value="aqua">Aqua</option>
-			<option value="teal">Teal</option>
-			<option value="blue">Blue</option>
-			<option value="navy">Navy</option>
-			<option value="fuchsia">Fuchsia</option>
-			<option value="purple">Purple</option>
-		</select>
-		<h3>Wall Color:</h3>
-		<select id="wallColor" value="black" onchange="wall = document.getElementById('wallColor').value;">
-			<option value="black">Black</option>
-			<option value="white">White</option>
-			<option value="silver">Silver</option>
-			<option value="grey">Grey</option>
-			<option value="red">Red</option>
-			<option value="maroon">Maroon</option>
-			<option value="orange">Orange</option>
-			<option value="yellow">Yellow</option>
-			<option value="olive">Olive</option>
-			<option value="lime">Lime</option>
-			<option value="green">Green</option>
-			<option value="aqua">Aqua</option>
-			<option value="teal">Teal</option>
-			<option value="blue">Blue</option>
-			<option value="navy">Navy</option>
-			<option value="fuchsia">Fuchsia</option>
-			<option value="purple">Purple</option>
-			<option value="saddlebrown">Brown</option>
-		</select>
-		<h3>Door Color:</h3>
-		<select id="doorColor" onchange="door = document.getElementById('doorColor').value;">
-			<option value="grey">Grey</option>
-			<option value="white">White</option>
-			<option value="silver">Silver</option>
-			<option value="black">Black</option>
-			<option value="red">Red</option>
-			<option value="maroon">Maroon</option>
-			<option value="orange">Orange</option>
-			<option value="yellow">Yellow</option>
-			<option value="olive">Olive</option>
-			<option value="lime">Lime</option>
-			<option value="green">Green</option>
-			<option value="aqua">Aqua</option>
-			<option value="teal">Teal</option>
-			<option value="blue">Blue</option>
-			<option value="navy">Navy</option>
-			<option value="fuchsia">Fuchsia</option>
-			<option value="purple">Purple</option>
-		</select>
-		<button onclick="doors[doors.length] = new Door(rooms[rooms.length-1].x, rooms[rooms.length-1].y, 1); console.log(doors);" id="addDoor">Add door</button>
+		<h2 id="mode">Mode: Room</h2>
+		<button onclick="swapMode()" id="modeButton">Paint Mode</button>
+		<div id="roomControls" style="display:block;">
+			<h3>Room Color:</h3>
+			<select id="roomColor" value="saddlebrown" onchange="room = document.getElementById('roomColor').value;">
+				<option value="saddlebrown">Brown</option>
+				<option value="white">White</option>
+				<option value="silver">Silver</option>
+				<option value="grey">Grey</option>
+				<option value="black">Black</option>
+				<option value="red">Red</option>
+				<option value="maroon">Maroon</option>
+				<option value="orange">Orange</option>
+				<option value="yellow">Yellow</option>
+				<option value="olive">Olive</option>
+				<option value="lime">Lime</option>
+				<option value="green">Green</option>
+				<option value="aqua">Aqua</option>
+				<option value="teal">Teal</option>
+				<option value="blue">Blue</option>
+				<option value="navy">Navy</option>
+				<option value="fuchsia">Fuchsia</option>
+				<option value="purple">Purple</option>
+			</select>
+			<h3>Wall Color:</h3>
+			<select id="wallColor" value="black" onchange="wall = document.getElementById('wallColor').value;">
+				<option value="black">Black</option>
+				<option value="white">White</option>
+				<option value="silver">Silver</option>
+				<option value="grey">Grey</option>
+				<option value="red">Red</option>
+				<option value="maroon">Maroon</option>
+				<option value="orange">Orange</option>
+				<option value="yellow">Yellow</option>
+				<option value="olive">Olive</option>
+				<option value="lime">Lime</option>
+				<option value="green">Green</option>
+				<option value="aqua">Aqua</option>
+				<option value="teal">Teal</option>
+				<option value="blue">Blue</option>
+				<option value="navy">Navy</option>
+				<option value="fuchsia">Fuchsia</option>
+				<option value="purple">Purple</option>
+				<option value="saddlebrown">Brown</option>
+			</select>
+			<h3>Door Color:</h3>
+			<select id="doorColor" onchange="door = document.getElementById('doorColor').value;">
+				<option value="grey">Grey</option>
+				<option value="white">White</option>
+				<option value="silver">Silver</option>
+				<option value="black">Black</option>
+				<option value="red">Red</option>
+				<option value="maroon">Maroon</option>
+				<option value="orange">Orange</option>
+				<option value="yellow">Yellow</option>
+				<option value="olive">Olive</option>
+				<option value="lime">Lime</option>
+				<option value="green">Green</option>
+				<option value="aqua">Aqua</option>
+				<option value="teal">Teal</option>
+				<option value="blue">Blue</option>
+				<option value="navy">Navy</option>
+				<option value="fuchsia">Fuchsia</option>
+				<option value="purple">Purple</option>
+			</select>
+		</div>
+		<div id="paintControls" style="display: none;">
+			<h3>Paint Color:</h3>
+			<select id="paintColor">
+				<option value="white">White</option>
+				<option value="silver">Silver</option>
+				<option value="grey">Grey</option>
+				<option value="black">Black</option>
+				<option value="red">Red</option>
+				<option value="maroon">Maroon</option>
+				<option value="sienna">Brown</option>
+				<option value="orange">Orange</option>
+				<option value="yellow">Yellow</option>
+				<option value="olive">Olive</option>
+				<option value="lime">Lime</option>
+				<option value="green">Green</option>
+				<option value="aqua">Aqua</option>
+				<option value="teal">Teal</option>
+				<option value="blue">Blue</option>
+				<option value="navy">Navy</option>
+				<option value="fuchsia">Fuchsia</option>
+				<option value="purple">Purple</option>
+				<option value="erase">Erase</option>
+			</select>
+			<h3>Paint Size:</h3>
+			<input type="range" id="paintSize" min="1" max="50" value="5" step="1"/>
+		<br/><br/>
+		<button onclick="paint = []">Clear Paint</button>
+		</div>
 		<h3>Scale:</h3>
 		<select id="scale" onchange="updateScale();">
 			<option value="35">Regular (35px)</option>

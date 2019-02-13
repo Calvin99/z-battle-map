@@ -5,6 +5,12 @@ console.clear();
 
 var mode = "draw";
 
+var brush = false;
+
+var forceLine = false;
+var startX = null, startY = null;
+var forceX = null, forceY = null;
+
 var scale = 35;
 
 var mouseX = null,
@@ -24,7 +30,6 @@ var door = "grey";
 
 var mapImg = new Image();
 mapImg.src = "";
-setInterval(draw, 20);
 
 var fReader = new FileReader();
 
@@ -89,6 +94,23 @@ Room.prototype.drawDoor = function() {
 var rooms = [];
 var newRoom = null;
 
+function swapMode() {
+	if (document.getElementById("mode").innerHTML == "Mode: Room") {
+		document.getElementById("mode").innerHTML = "Mode: Paint";
+		document.getElementById("modeButton").innerHTML = "Room Mode";
+		document.getElementById("paintControls").style.display = "block";
+		document.getElementById("roomControls").style.display = "none";
+		mode = "paint";
+
+	} else {
+		document.getElementById("mode").innerHTML = "Mode: Room";
+		document.getElementById("modeButton").innerHTML = "Paint Mode";
+		document.getElementById("paintControls").style.display = "none";
+		document.getElementById("roomControls").style.display = "block";
+		mode = "draw";
+	}
+}
+
 function updateScale() {
 	scale = parseInt(document.getElementById("scale").value);
 	for (i = 0; i < rooms.length; i++) {
@@ -99,10 +121,34 @@ function updateScale() {
 	}
 }
 
+var paint = [];
+
+setInterval(draw, 20);
+
 function draw() {
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, 700, 700);
     
+    if (mapImg.src != null) {
+    	ctx.drawImage(mapImg, 0, 0);
+    }
+    
+    //Paint
+    for (i = 0; i < paint.length; i++) {
+        ctx.fillStyle = paint[i][3];
+        ctx.beginPath();
+        ctx.arc(paint[i][0], paint[i][1], paint[i][2], Math.PI * 2, false);
+        ctx.fill();
+    }
+    
+    if (mode == "paint") {
+		ctx.fillStyle = "rgba(25, 25, 25, 0.25)";
+		ctx.beginPath();
+		ctx.arc(mouseX, mouseY, document.getElementById("paintSize").value, Math.PI * 2, false);
+		ctx.fill();
+	}
+    
+    //Rooms
     for (j = 0; j < rooms.length; j++) {
     	rooms[j].draw();
     }
@@ -141,7 +187,30 @@ document.onmousemove = function(e) {
     mouseX = Math.round((e.clientX - rect.left));
     mouseY = Math.round((e.clientY - rect.top));
     
-    if (newRoom != null) {
+    if (mode == "paint") {
+		if (forceLine) {
+			if (forceX == null && forceY == null) {
+				if (Math.pow(Math.pow(mouseX - startX, 2) + Math.pow(mouseY - startY, 2), 0.5) > 3) {
+					if (Math.abs(mouseX - startX) > Math.abs(mouseY - startY)) forceY = mouseY;
+					else forceX = mouseX;
+				}
+			} else {
+				if (forceX != null) mouseX = forceX;
+				if (forceY != null) mouseY = forceY;
+			}
+		}
+		
+    	if (brush) {
+			if ("erase" == document.getElementById("paintColor").value) {
+				for (i = 0; i < paint.length; i++) {
+					var dist = Math.pow(Math.pow(paint[i][0] - mouseX, 2) + Math.pow(paint[i][1] - mouseY, 2), 0.5);
+					if (document.getElementById("paintSize").value > dist ||  paint[i][2] > dist)
+						paint.splice(i, 1);
+				}
+			} else
+				paint[paint.length] = [mouseX, mouseY, document.getElementById("paintSize").value, document.getElementById("paintColor").value];
+		}
+    } else if (newRoom != null) {
     	if (mouseX > xStart) {
     		newRoom.w = Math.round((mouseX-xStart)/scale)*scale;
     		newRoom.x = xStart;
@@ -188,6 +257,11 @@ document.onmousedown = function(e) {
     
     var deselect = false;
     
+    if (mode == "paint") {
+    	brush = true;
+    	return;
+    }
+    
     if (selected != null) {
 		if (rooms[selected].da == 1 && mouseX > rooms[selected].dx && mouseX < rooms[selected].dx + scale && mouseY > rooms[selected].dy - 4  && mouseY < rooms[selected].dy + 4 || rooms[selected].da == -1 && mouseX > rooms[selected].dx - 4 && mouseX < rooms[selected].dx + 4 && mouseY > rooms[selected].dy  && mouseY < rooms[selected].dy + scale) {
 			mode = "door";
@@ -219,7 +293,28 @@ document.onmouseup = function(e) {
     	rooms[rooms.length] = newRoom;
     newRoom = null;
     
-    mode = "draw";
+    if (mode == "paint")
+		brush = false;
+	else
+		mode = "draw";
+}
+
+
+document.onkeydown = function(e) {
+    e = window.event || e;
+    var key = e.keyCode;
+    if (hover)
+		e.preventDefault();
+
+	if (key === 16) { //shift
+		if (mode == "paint") {
+			forceLine = true;
+			startX = mouseX;
+			startY = mouseY;
+			forceX = null;
+			forceY = null;
+		}
+    }
 }
 
 document.onkeyup = function(e) {
@@ -233,5 +328,11 @@ document.onkeyup = function(e) {
     		rooms.splice(selected,1);
     		selected = null;
     	}
+    } else if (key === 16) { //shift
+    	forceLine = false;
+    	startX = null;
+    	startY = null;
+		forceX = null;
+		forceY = null;
     }
 }
