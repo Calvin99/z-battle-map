@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>D&D Map Drawing</title>
+	</head>
+	<body height="4800" style="background-color : #888;">
+		<canvas id="map" width="700" height="700" onmouseover="hover = true;" onmouseleave="hover = false;" style=" float: left; top:0; left:0; margin-right: 20;"></canvas>
+		<h3>Background Color:</h3>
+		<select id="backgroundColor" defaultValue="white" onchange="background = document.getElementById('backgroundColor').value;">
+			<option value="white">White</option>
+			<option value="silver">Silver</option>
+			<option value="grey">Grey</option>
+			<option value="black">Black</option>
+			<option value="red">Red</option>
+			<option value="maroon">Maroon</option>
+			<option value="orange">Orange</option>
+			<option value="yellow">Yellow</option>
+			<option value="olive">Olive</option>
+			<option value="lime">Lime</option>
+			<option value="green">Green</option>
+			<option value="aqua">Aqua</option>
+			<option value="teal">Teal</option>
+			<option value="blue">Blue</option>
+			<option value="navy">Navy</option>
+			<option value="fuchsia">Fuchsia</option>
+			<option value="purple">Purple</option>
+			<option value="saddlebrown">Brown</option>
+		</select>
+		<input type="checkbox" id="grid" value="grid" checked>Show Grid<br>
+		<h3>Room Color:</h3>
+		<select id="roomColor" value="saddlebrown" onchange="room = document.getElementById('roomColor').value;">
+			<option value="saddlebrown">Brown</option>
+			<option value="white">White</option>
+			<option value="silver">Silver</option>
+			<option value="grey">Grey</option>
+			<option value="black">Black</option>
+			<option value="red">Red</option>
+			<option value="maroon">Maroon</option>
+			<option value="orange">Orange</option>
+			<option value="yellow">Yellow</option>
+			<option value="olive">Olive</option>
+			<option value="lime">Lime</option>
+			<option value="green">Green</option>
+			<option value="aqua">Aqua</option>
+			<option value="teal">Teal</option>
+			<option value="blue">Blue</option>
+			<option value="navy">Navy</option>
+			<option value="fuchsia">Fuchsia</option>
+			<option value="purple">Purple</option>
+		</select>
+		<h3>Wall Color:</h3>
+		<select id="wallColor" value="black" onchange="wall = document.getElementById('wallColor').value;">
+			<option value="black">Black</option>
+			<option value="white">White</option>
+			<option value="silver">Silver</option>
+			<option value="grey">Grey</option>
+			<option value="red">Red</option>
+			<option value="maroon">Maroon</option>
+			<option value="orange">Orange</option>
+			<option value="yellow">Yellow</option>
+			<option value="olive">Olive</option>
+			<option value="lime">Lime</option>
+			<option value="green">Green</option>
+			<option value="aqua">Aqua</option>
+			<option value="teal">Teal</option>
+			<option value="blue">Blue</option>
+			<option value="navy">Navy</option>
+			<option value="fuchsia">Fuchsia</option>
+			<option value="purple">Purple</option>
+			<option value="saddlebrown">Brown</option>
+		</select>
+		<h3>Door Color:</h3>
+		<select id="doorColor" onchange="door = document.getElementById('doorColor').value;">
+			<option value="grey">Grey</option>
+			<option value="white">White</option>
+			<option value="silver">Silver</option>
+			<option value="black">Black</option>
+			<option value="red">Red</option>
+			<option value="maroon">Maroon</option>
+			<option value="orange">Orange</option>
+			<option value="yellow">Yellow</option>
+			<option value="olive">Olive</option>
+			<option value="lime">Lime</option>
+			<option value="green">Green</option>
+			<option value="aqua">Aqua</option>
+			<option value="teal">Teal</option>
+			<option value="blue">Blue</option>
+			<option value="navy">Navy</option>
+			<option value="fuchsia">Fuchsia</option>
+			<option value="purple">Purple</option>
+		</select>
+		<button onclick="doors[doors.length] = new Door(rooms[rooms.length-1].x, rooms[rooms.length-1].y, 1); console.log(doors);" id="addDoor">Add door</button>
+		<h3>Scale:</h3>
+		<select id="scale" onchange="updateScale();">
+			<option value="35">Regular (35px)</option>
+			<option value="14">Tiny (14px)</option>
+			<option value="20">Small (20px)</option>
+			<option value="50">Large (50px)</option>
+			<option value="70">Huge (70px)</option>
+		</select>
+		<script src="js/draw.js"></script>
+		<h3>Background Image:</h3>
+		<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);"/>
+	</body>
+</html>

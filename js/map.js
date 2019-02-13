@@ -495,6 +495,7 @@ document.onkeydown = function(e) {
     	startY = mouseY;
     }
 }
+
 document.onkeyup = function(e) {
     e = window.event || e;
     var key = e.keyCode;
