@@ -1,18 +1,17 @@
 <html>
 	<head>
-		<title>Z Battle Map</title>
-    	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Corsiva">
+		<title>Z D&D Battle Map</title>
 	</head>
-	<body height="4800" style="background-color : #333; color : #fff; font-family: 'Corsiva'">
+	<body height="4800" style="background-color : #888;">
 		<canvas id="map" width="700" height="700" onmouseover="hover = true;" onmouseleave="hover = false;" style=" float: left; top:0; left:0; margin-right: 20;"></canvas>
 		<div id="menu" style="display: block;" width="200">
 			<h2 id="mode">Mode: Move</h2>
-			<button onclick="swapMode()" id="modeButton" style="cursor: alias;">Paint Mode</button>
+			<button onclick="swapMode()" id="modeButton">Paint Mode</button>
 			<div id="creatureStats" style="display: block;">
-				<p>Name:</p>
+				<h3>Name:</h3>
 				<input type="text" id="name" defaultValue="None selected" onchange="{players[selected].name = document.getElementById('name').value;}" style="font-size: 18px; z-index: 1;"></input>
-				<br/><br/>
-				<select id = "size" onchange="players[selected].resize();" style="cursor: context-menu;">
+				<h3>Size:</h3>
+				<select id = "size" onchange="players[selected].resize();">
 				  <option value="t">Tiny</option>
 				  <option value="s">Small</option>
 				  <option value="m">Medium</option>
@@ -20,8 +19,8 @@
 				  <option value="h">Huge</option>
 				  <option value="g">Gargantuan</option>
 				</select>
-				<br/>
-				<select id = "color" onchange="players[selected].recolor();" style="cursor: context-menu;">
+				<h3>Color:</h3>
+				<select id = "color" onchange="players[selected].recolor();"">
 				  <option value="navy">Alkas Blue™</option>
 				  <option value="#36393e">Thia Grey</option>
 				  <option value="#4b784b">Turtle Green</option>
@@ -46,33 +45,19 @@
 				  <option value="purple">Purple</option>
 				  <option value="saddlebrown">Brown</option>
 				</select>
-				<p>Speed:</p>
-				<input type="number" id="speed" defaultValue="30" onchange="{players[selected].name = document.getElementById('name').value;}" style="font-size: 18px; z-index: 1;"></input>
-				<p id="altLabel">Altitude: 0</p>
-				<input type="range" id="playerAlt" min="0" max="100" value="0" step="1" style="cursor: col-resize;"/>
-				<p>Notes:</p>
+				<h3 id="altLabel">Altitude: 0</h3>
+				<input type="range" id="playerAlt" min="0" max="100" value="0" step="1"/>
+				<h3>Notes:</h3>
 				<textarea id="notes" rows="3" cols="30" onchange="players[selected].notes = document.getElementById('notes').value;" style="z-index: 1;"></textarea>
 				<br/><br/>
-				<button onclick="addCreature()" style="cursor: cell;">Add Creature</button>
-				<button onclick="deleteCreature()" style="cursor: not-allowed;">Remove Selected</button>
-				<br/>
-				<p>NPC's:</p>
-				<select id = "npcSelect" style="cursor: context-menu;">
-				  <option value="Aatzer">Aatzer</option>
-				  <option value="Magann">Magann</option>
-				</select>
-				<button onclick="addNPC(document.getElementById('npcSelect').value);" style="cursor: cell;">Add NPC</button>
-				<br/>
-				<p>Options:</p>
-				<input type="checkbox" id="names" value="names" onchange="names = document.getElementById('names').checked;">Show Character Labels</input>
-				<br/>
-				<input type="checkbox" id="label" value="label" onchange="label = document.getElementById('label').checked;">Show Square Labels</input>
-				<br/>
-				<input type="checkbox" id="limit" value="limit" onchange="limitMove = document.getElementById('limit').checked;">Show Movement</input>
+				<button onclick="addCreature()">Add Creature</button>
+				<button onclick="deleteCreature()">Remove Selected</button>
+				<br/><br/>
+				<input type="checkbox" id="label" value="label" onchange="label = document.getElementById('label').checked;">Show Square Label</input>
 			</div>
 			<div id="paintControls" style="display: none;">
-				<p>Paint Color:</p>
-				<select id="paintColor" style="cursor: context-menu;">
+				<h3>Paint Color:</h3>
+				<select id="paintColor">
 				  <option value="white">White</option>
 				  <option value="silver">Silver</option>
 				  <option value="grey">Grey</option>
@@ -93,14 +78,12 @@
 				  <option value="purple">Purple</option>
 				  <option value="erase">Erase</option>
 				</select>
-				<p>Paint Size:</p>
-				<input type="range" id="paintSize" min="1" max="50" value="5" step="1" style="cursor: col-resize;"/>
+				<h3>Paint Size:</h3>
+				<input type="range" id="paintSize" min="1" max="50" value="5" step="1"/>
 				<br/><br/>
-				<button onclick="undoPaint()" style="cursor: not-allowed;">Undo Paint</button>
-				<br/>
-				<button onclick="paint = []" style="cursor: not-allowed;">Clear Paint</button>
-				<p>Background Color:</p>
-				<select id="backgroundColor" onchange="background = document.getElementById('backgroundColor').value;" style="cursor: context-menu;">
+				<button onclick="paint = []">Clear Paint</button>
+				<h3>Background Color:</h3>
+				<select id="backgroundColor" onchange="background = document.getElementById('backgroundColor').value;">
 				  <option value="dimgrey">Dark Grey</option>
 				  <option value="white">White</option>
 				  <option value="silver">Silver</option>
@@ -121,28 +104,22 @@
 				  <option value="fuchsia">Fuchsia</option>
 				  <option value="purple">Purple</option>
 				</select>
-				<p>Background Image:</p>
-				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);" style="cursor: copy;"/>
+				<h3>Background Image:</h3>
+				<input type='file' id="mapImg" onchange="fReader.readAsDataURL(document.getElementById('mapImg').files[0]);"/>
 				<h4>Defaults:</h4>
-				<select id="mapDef" onchange="mapImg.src = document.getElementById('mapDef').value;" style="cursor: context-menu;">
+				<select id="mapDef" onchange="mapImg.src = document.getElementById('mapDef').value;">
 					<option value="">None</option>
 					<option value="images/Ship.png">The Madrigal</option>
 				</select>
-				<p>Scale:</p>
-				<select id="scale" onchange="updateScale();" style="cursor: zoom-in;">
+				<h3>Scale:</h3>
+				<select id="scale" onchange="updateScale();">
 				  <option value="35">Regular (35px)</option>
 				  <option value="14">Tiny (14px)</option>
 				  <option value="20">Small (20px)</option>
 				  <option value="50">Large (50px)</option>
 				  <option value="70">Huge (70px)</option>
 				</select>
-				<br/>
-				<h4>Presets:</h4>
-				<select id="presets" onchange="usePreset(document.getElementById('presets').value);" style="cursor: context-menu;">
-					<option value="">None</option>
-				</select>
 			</div>
-		</div>
 		<script src="js/map.js"></script>
 	</body>
 </html>
