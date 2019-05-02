@@ -62,13 +62,14 @@
 				  <option value="Magann">Magann</option>
 				</select>
 				<button onclick="addNPC(document.getElementById('npcSelect').value);" style="cursor: cell;">Add NPC</button>
+				<button onclick="promptNPC();" style="cursor: cell;">Create NPC</button>
 				<br/>
 				<p>Options:</p>
 				<input type="checkbox" id="names" value="names" onchange="names = document.getElementById('names').checked;">Show Character Labels</input>
 				<br/>
 				<input type="checkbox" id="label" value="label" onchange="label = document.getElementById('label').checked;">Show Square Labels</input>
 				<br/>
-				<input type="checkbox" id="limit" value="limit" onchange="limitMove = document.getElementById('limit').checked;">Show Movement</input>
+				<input type="checkbox" id="limit" value="limit" onchange="limitMove = document.getElementById('limit').checked;">Limit Movement</input>
 			</div>
 			<div id="paintControls" style="display: none;">
 				<p>Paint Color:</p>

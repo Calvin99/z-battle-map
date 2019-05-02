@@ -6,6 +6,14 @@ console.clear();
 
 var scale = 35;
 
+/* Scales:
+ *	- Tiny: 	14px (50x50)
+ *	- Small: 	20px (35x35)
+ *	- Regular: 	35px (20x20)
+ *	- Large: 	50px (14x14)
+ *	- Huge: 	70px (10x10)
+ */
+
 var mouseX = null,
     mouseY = null;
  
@@ -19,6 +27,7 @@ var mode = "move";
 var rivals = false;
 
 var limitMove = false;
+var outOfBounds = false;
 
 var brush = false;
 
@@ -47,12 +56,12 @@ fReader.onloadend = function(event){
 }
 
 var sizeNumber = new Map();
-sizeNumber.set("t", scale/7);  //35/7
-sizeNumber.set("s", scale*2/7); //35*2/7
-sizeNumber.set("m", scale*3/7); //35*3/7
-sizeNumber.set("l", scale*6/7); //35*6/7
-sizeNumber.set("h", scale*9/7); //35*9/7
-sizeNumber.set("g", scale*13/7); //35*13/7
+sizeNumber.set("t", scale/7);
+sizeNumber.set("s", scale*2/7);
+sizeNumber.set("m", scale*3/7);
+sizeNumber.set("l", scale*6/7);
+sizeNumber.set("h", scale*9/7);
+sizeNumber.set("g", scale*13/7);
 
 function Creature(x, y, color, name, size, speed) {
     this.x = x;
@@ -260,8 +269,8 @@ Creature.prototype.update = function() {
     	else if (this.size == "h") mvBonus = scale * 3;
     	else if (this.size == "g") mvBonus = scale * 4;
     	this.mvW = this.speed / 5 * scale * 2 + mvBonus;
-    	this.mvX = Math.floor(this.x / scale) * scale - (this.speed / 5 * scale);
-    	this.mvY = Math.floor(this.y / scale) * scale - (this.speed / 5 * scale);
+    	this.mvX = Math.floor((this.x - this.r) / scale) * scale - (this.speed / 5 * scale);
+    	this.mvY = Math.floor((this.y - this.r) / scale) * scale - (this.speed / 5 * scale);
     }
 }
 
@@ -313,6 +322,38 @@ function addNPC (name) {
 	players[players.length] = npcs.get(name);
 	players[players.length - 1].rGoal = sizeNumber.get(players[players.length - 1].size);
 	players[players.length - 1].align();
+}
+
+function promptNPC () {
+	var start = new Map();
+	start.set("t", scale * 3 / 4);
+	start.set("s", scale / 2);
+	start.set("m", scale / 2);
+	start.set("l", scale);
+	start.set("h", scale * 3 / 2);
+	start.set("g", scale * 2);
+	var valid = false;
+	var name = prompt("What is this NPC's name?");
+	var size = prompt("What size is this NPC?").toLowerCase()[0];
+	while (!valid) {
+		switch (size) {
+			case "t":
+			case "s":
+			case "m":
+			case "l":
+			case "h":
+			case "g":
+				valid = true;
+				break;
+			default:
+				size = prompt("Please enter a valid size").toLowerCase()[0];
+				break;
+		}
+	}
+	var color = prompt("What color represents this NPC?");
+	var speed = parseInt(prompt("What is this NPC's speed?"));
+	while (speed == NaN) speed = parseInt(prompt("Please enter a valid speed"));
+	players[players.length] = new Creature(start.get(size), start.get(size), color, name, size, speed);
 }
 
 var presets = new Map();
@@ -461,20 +502,29 @@ function draw() {
 			ctx.fillRect(Math.round(mouseX / scale) * scale - scale * 2, Math.round(mouseY / scale) * scale - scale * 2, scale * 4, scale * 4);
 		}
 		
-		var dx = mouseX - players[selected].x;
-		var dy = mouseY - players[selected].y;
-		var dh = Math.pow(Math.pow(dx, 2) + Math.pow(dy, 2), 0.5);
-		var th = Math.atan2(dy, dx) * 180 / Math.PI;
-		if (dh < scale) canvas.style.cursor = "move";
+		if (mouseX < Math.floor((players[selected].x - players[selected].r) / scale) * scale - players[selected].speed / 5 * scale) outOfBounds = true;
+		else if (mouseX > Math.ceil((players[selected].x + players[selected].r) / scale) * scale + players[selected].speed / 5 * scale) outOfBounds = true;		
+		else if (mouseY < Math.floor((players[selected].y - players[selected].r) / scale) * scale - players[selected].speed / 5 * scale) outOfBounds = true;
+		else if (mouseY > Math.ceil((players[selected].y + players[selected].r) / scale) * scale + players[selected].speed / 5 * scale) outOfBounds = true;
+		else outOfBounds = false;
+		
+		if (outOfBounds) canvas.style.cursor = "not-allowed";
+		else { 
+			var dx = mouseX - players[selected].x;
+			var dy = mouseY - players[selected].y;
+			var dh = Math.pow(Math.pow(dx, 2) + Math.pow(dy, 2), 0.5);
+			var th = Math.atan2(dy, dx) * 180 / Math.PI;
+			if (dh < scale) canvas.style.cursor = "move";
 
-		else if (-22.5 < th && th <= 22.5) canvas.style.cursor = "e-resize";
-		else if (22.5 < th && th <= 67.5) canvas.style.cursor = "se-resize";
-		else if (67.5 < th && th <= 112.5) canvas.style.cursor = "s-resize";
-		else if (112.5 < th && th <= 157.5) canvas.style.cursor = "sw-resize";
-		else if (157.5 < th || th < -157.5) canvas.style.cursor = "w-resize";
-		else if (-112.5 > th && th >= -157.5) canvas.style.cursor = "nw-resize";
-		else if (-67.5 > th && th >= -112.5) canvas.style.cursor = "n-resize";
-		else canvas.style.cursor = "ne-resize";
+			else if (-22.5 < th && th <= 22.5) canvas.style.cursor = "e-resize";
+			else if (22.5 < th && th <= 67.5) canvas.style.cursor = "se-resize";
+			else if (67.5 < th && th <= 112.5) canvas.style.cursor = "s-resize";
+			else if (112.5 < th && th <= 157.5) canvas.style.cursor = "sw-resize";
+			else if (157.5 < th || th < -157.5) canvas.style.cursor = "w-resize";
+			else if (-112.5 > th && th >= -157.5) canvas.style.cursor = "nw-resize";
+			else if (-67.5 > th && th >= -112.5) canvas.style.cursor = "n-resize";
+			else canvas.style.cursor = "ne-resize";
+		}
 	}
     
     //Draw labels
@@ -504,6 +554,14 @@ function draw() {
         if (players[i].held) {
             players[i].x = mouseX - xShift;
             players[i].y = mouseY - yShift;
+            
+            if (limitMove) {
+				if (players[i].x < players[i].mvX + scale / 8) players[i].x = players[i].mvX + scale / 8;
+				else if (players[i].x > players[i].mvX + players[i].mvW - scale / 8) players[i].x = players[i].mvX + players[i].mvW - scale / 8;
+				if (players[i].y < players[i].mvY + scale / 8) players[i].y = players[i].mvY + scale / 8;
+				else if (players[i].y > players[i].mvY + players[i].mvW - scale / 8) players[i].y = players[i].mvY + players[i].mvW - scale / 8;
+            }
+            
             if (players[i].z < 5) players[i].z++;
         }
         else players[i].update();
@@ -604,15 +662,17 @@ document.onmousedown = function(e) {
 			}
 			canvas.style.cursor = "grabbing";
 		} else if (mode == "walk") {
-			if (players[selected].size == "t") {
-				players[selected].xGoal = Math.round((mouseX - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
-				players[selected].yGoal = Math.round((mouseY - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
-			} else if (players[selected].size == "l" || players[selected].size == "g") {
-				players[selected].xGoal = Math.round(mouseX / scale) * scale;
-				players[selected].yGoal = Math.round(mouseY / scale) * scale;
-			} else {
-				players[selected].xGoal = Math.round((mouseX - (scale/2)) / scale) * scale + (scale/2);
-				players[selected].yGoal = Math.round((mouseY - (scale/2)) / scale) * scale + (scale/2);
+			if (!outOfBounds) {
+				if (players[selected].size == "t") {
+					players[selected].xGoal = Math.round((mouseX - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
+					players[selected].yGoal = Math.round((mouseY - (scale/4)) / (scale/2)) * (scale/2) + (scale/4);
+				} else if (players[selected].size == "l" || players[selected].size == "g") {
+					players[selected].xGoal = Math.round(mouseX / scale) * scale;
+					players[selected].yGoal = Math.round(mouseY / scale) * scale;
+				} else {
+					players[selected].xGoal = Math.round((mouseX - (scale/2)) / scale) * scale + (scale/2);
+					players[selected].yGoal = Math.round((mouseY - (scale/2)) / scale) * scale + (scale/2);
+				}
 			}
 		} else {
 			paintLabel = ticker;
